@@ -8,6 +8,7 @@ class ruletka(object):
     
 class player(object):
     allbets = {}
+    roundstats = []
     
     def __init__(self,name):
         self.name=name
@@ -17,10 +18,11 @@ class player(object):
     totalwins = 0
     
     def placebet(self,bet):
-        
-        self.bet = bet
-        player.allbets[self] = bet
-        
+        if ((0 <= bet) and (bet <= 36)):
+            self.bet = bet
+            player.allbets[self] = bet
+        else:
+            print "Bet out of range: ", bet
 try:
     (numplayers,numgames) = sys.argv[1:3]
 except ValueError:
@@ -32,9 +34,9 @@ if not (numplayers.isdigit() or numgames.isdigit()):
     exit()
 
 players=[]
+stats=[]
 
 for i in range(0,int(numplayers)):
-    print i
 
     players.append(player(raw_input("Player %d name" % i)))
 
@@ -45,22 +47,29 @@ for i in range (0,int(numgames)):
     for p in players:
         
         pn=p.name
-        print "game", i, "Player", p.name
-        p.placebet(raw_input("Player %s place your bet" % pn))
-        print "Player %s bet: " % pn, p.bet
-        print "------------------"             
+        print "Game: ", i, "Player: ", p.name
+        p.placebet(int(raw_input("Player %s place your bet: " % pn)))
+        print "Player %s bets: " % pn, p.bet
 
-        #wynik=ruletka().play()       
-        wynik="2"       
+    #wynik=ruletka().play()       
+    wynik=2       
 
-        print "ruletka: ", wynik
-        for k,v in player.allbets.items():
-            print k,v
-            if v == wynik:
-                k.totalwins +=1
-                print "Player %s wins round %d" % (k.name, i) 
-             
-    for p in players:
-        print "Player ", p.name, "won ", p.totalwins, "times" 
+    print "ruletka: ", wynik
+    roundresult=[]
+    for k,v in player.allbets.items():
+        if v == wynik:
+            k.totalwins +=1
+            print i
+            roundresult.append([k,wynik])
+            print "Player %s wins round %d " % (k.name, i) 
+        else:
+            print "Player %s lost round %d " % (k.name, i)
+    
+    print "roundresult", roundresult
+    stats[i]=roundresult
+         
+for p in players:
+    print "Player ", p.name, "won ", p.totalwins, "times" 
 
+print stats
  
