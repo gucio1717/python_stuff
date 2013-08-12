@@ -8,7 +8,7 @@ class ruletka(object):
     
 class player(object):
     allbets = {}
-    stats = []
+    stats = {}
     
     def __init__(self,name):
         self.name=name
@@ -68,11 +68,11 @@ for i in range (0,int(numgames)):
             roundresult.append(False)
     print "roundresult", roundresult
     print i
-    player.stats.append([i,wynik,roundresult])
+    player.stats[(i,wynik)]=roundresult
          
 for p in players:
     print "Player ", p.name, "won ", p.totalwins, "times" 
 
-for i in player.stats:
-    print i
+for k,v in (player.stats).items():
+    print k,v
  
