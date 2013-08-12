@@ -8,7 +8,7 @@ class ruletka(object):
     
 class player(object):
     allbets = {}
-    roundstats = []
+    stats = []
     
     def __init__(self,name):
         self.name=name
@@ -23,6 +23,7 @@ class player(object):
             player.allbets[self] = bet
         else:
             print "Bet out of range: ", bet
+
 try:
     (numplayers,numgames) = sys.argv[1:3]
 except ValueError:
@@ -34,7 +35,7 @@ if not (numplayers.isdigit() or numgames.isdigit()):
     exit()
 
 players=[]
-stats=[]
+
 
 for i in range(0,int(numplayers)):
 
@@ -60,17 +61,18 @@ for i in range (0,int(numgames)):
         if v == wynik:
             k.totalwins +=1
             print i
-            roundresult.append([i,k,wynik])
+            roundresult.append(k.name)
             print "Player %s wins round %d " % (k.name, i) 
         else:
             print "Player %s lost round %d " % (k.name, i)
-            roundresult.append([i,False,wynik])
+            roundresult.append(False)
     print "roundresult", roundresult
     print i
-    stats.append(roundresult)
+    player.stats.append([i,wynik,roundresult])
          
 for p in players:
     print "Player ", p.name, "won ", p.totalwins, "times" 
 
-print stats
+for i in player.stats:
+    print i
  
