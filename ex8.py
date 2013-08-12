@@ -60,13 +60,14 @@ for i in range (0,int(numgames)):
         if v == wynik:
             k.totalwins +=1
             print i
-            roundresult.append([k,wynik])
+            roundresult.append([i,k,wynik])
             print "Player %s wins round %d " % (k.name, i) 
         else:
             print "Player %s lost round %d " % (k.name, i)
-    
+            roundresult.append([i,False,wynik])
     print "roundresult", roundresult
-    stats[i]=roundresult
+    print i
+    stats.append(roundresult)
          
 for p in players:
     print "Player ", p.name, "won ", p.totalwins, "times" 
