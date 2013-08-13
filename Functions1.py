@@ -10,7 +10,7 @@ def fHello ():
 def printData ( person, phoneNo ):
     """Another way of setting a docstring
 
-    It also works!
+    It also works!!
     """
     print person + "'s phone number is " + str(phoneNo)
 
@@ -18,7 +18,7 @@ print "\n---P1\n"
 #Important warning: The default value is evaluated only once (example at the end of the file)
 def printData1 ( person = "No name", phoneNo = 0 ):
     print person + "'s phone number is " + str(phoneNo)
-    
+
 fHello()
 printData( "Mark", 313438 ) #required arguments
 printData( phoneNo = 122345, person = "John" ) # keyword arguments #Notice the order of arguments!!!
