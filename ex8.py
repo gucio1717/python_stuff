@@ -39,7 +39,7 @@ players=[]
 
 for i in range(0,int(numplayers)):
 
-    players.append(player(raw_input("Player %d name" % i)))
+    players.append(player(raw_input("Player %d name: " % i)))
 
     print players[i].name
 
@@ -55,24 +55,27 @@ for i in range (0,int(numgames)):
     #wynik=ruletka().play()       
     wynik=2       
 
-    print "ruletka: ", wynik
+    print "Ruletka: ", wynik
     roundresult=[]
     for k,v in player.allbets.items():
         if v == wynik:
             k.totalwins +=1
-            print i
-            roundresult.append(k)
+            roundresult.append(k.name)
             print "Player %s wins round %d " % (k.name, i) 
         else:
             print "Player %s lost round %d " % (k.name, i)
-            roundresult.append(None)
-    print "roundresult", roundresult
-    print i
-    player.stats[(i,wynik)]=roundresult
+            roundresult.append('')
+    
+    player.stats[i]=(wynik,roundresult)
          
 for p in players:
     print "Player ", p.name, "won ", p.totalwins, "times" 
 
-for k,v in (player.stats).items():
-    print k,v
- 
+print "\nRound  Result    Winners\n"
+
+for k,v in ((player.stats).items()):
+    round = str(k)
+    wynik = str(v[0])
+    winners = " ".join(v[1]).lstrip()
+    print "%3s %7s       %-20s" % (round,wynik,winners)
+    
