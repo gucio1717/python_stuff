@@ -53,8 +53,8 @@ for i in range (0,int(numgames)):
         p.placebet(int(raw_input("Player %s place your bet: " % pn)))
         print "Player %s bets: " % pn, p.bet
 
-    #wynik=ruletka().play()       
-    wynik=2       
+    wynik=ruletka().play()       
+    #wynik=2       
 
     print "Ruletka: ", wynik
     roundresult=[]
@@ -62,7 +62,7 @@ for i in range (0,int(numgames)):
         if v == wynik:
             k.totalwins +=1
             roundresult.append(k.name)
-            print "Player %s wins round %d " % (k.name, i) 
+            print "Player %s won round %d " % (k.name, i) 
         else:
             print "Player %s lost round %d " % (k.name, i)
             roundresult.append('')
