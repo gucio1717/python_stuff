@@ -9,6 +9,7 @@ class ruletka(object):
 class player(object):
     allbets = {}
     stats = {}
+    players = []
     
     def __init__(self,name):
         self.name=name
@@ -39,16 +40,16 @@ players=[]
 
 for i in range(0,int(numplayers)):
 
-    players.append(player(raw_input("Player %d name: " % i)))
+    player.players.append(player(raw_input("Player %d name: " % i)))
 
-    print players[i].name
+    print player.players[i].name
 
 for i in range (0,int(numgames)):
     
-    for p in players:
+    for p in player.players:
         
         pn=p.name
-        print "Game: ", i, "Player: ", p.name
+        print "Game: ", i, "Player: ", pn
         p.placebet(int(raw_input("Player %s place your bet: " % pn)))
         print "Player %s bets: " % pn, p.bet
 
@@ -67,11 +68,12 @@ for i in range (0,int(numgames)):
             roundresult.append('')
     
     player.stats[i]=(wynik,roundresult)
-         
-for p in players:
+
+print "\n"         
+for p in player.players:
     print "Player ", p.name, "won ", p.totalwins, "times" 
 
-print "\nRound  Result    Winners\n"
+print "Summary\nRound  Result    Winners\n"
 
 for k,v in ((player.stats).items()):
     round = str(k)
