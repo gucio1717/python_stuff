@@ -131,13 +131,13 @@ for a in f:
                 print(a['suname'] + " " + a['suid']+ " " + rptype['type']+ " " + rptype['suid_reg']) 
         
     # then, scan particular SUNAMEs
-    
-    for x in laeip_map[a]:
-    
-        if re.match(x['suid_reg'], a['suid']):
-            print(a['suname'] + " " + a['suid']+ " " + x['type']+ " " + x['suid_reg'])
-            
+    if a['suname'] in laeip_map.keys():
+        for x in laeip_map[a['suname']]:
         
+            if re.match(x['suid_reg'], a['suid']):
+                print(a['suname'] + " " + a['suid']+ " " + x['type']+ " " + x['suid_reg'])
+                
             
+                
 #     if a['suname'] in laeip_map.keys():
 #         print('Found'+ str(laeip_map[a['suname']]))
