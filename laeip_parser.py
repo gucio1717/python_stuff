@@ -106,21 +106,91 @@ class LaeipDtLoader:
         def __getitem__(self,i):
                 return self.soft[i]
 
+def add_to_suid_map(suname, rp_type, suid):
+    print(suname, rp_type,suid)
+    tmpdict = {}
+
+    for t in rp_type:          
+#       
+        if suname in suid_map.keys():
+            tmpdict = suid_map[suname]
+            
+        tmpdict[t] = suid 
+        suid_map[suname] = tmpdict
+            
+
 import re
 
 f = LaeipDtLoader(r'H:\tmp\LAEIP.log')
 
 #laeip_map = {'GARP2A': [{ 'suname': 'INETR', 'cno': '', 'suid': r'^7/'}, { 'suname': 'RGCONR', 'cno': '', 'suid': r'^7/'}] }
 
-laeip_map = {'INETR':      [{'cno': '', 'suid_reg': r'.*', 'type': 'garp2a'},{'cno': '', 'suid_reg': r'.*', 'type': 'rpp4s' }],
-             'default':    [{'cno': '', 'suid_reg': r'^8/', 'type': 'epb1'},  {'cno': '', 'suid_reg': r'^7/', 'type': 'garp2a'}]
+laeip_map = {'INETR':          [{'cno': '', 'suid_reg': r'', 'type': ('garp2a',)},{'cno': '', 'suid_reg': r'.*146 125.*', 'type': ('rpp4s',) }],
+             'RPIFDR':         [{'cno': '', 'suid_reg': r'.*146 03.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*146 23.*', 'type': ('rpi',) }],
+             'RPFDR':          [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'RPEXR':          [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'SFRAMER':        [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'GPEX2R':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'FSIR':           [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'ROFWR':          [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'EBEXR':          [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'RGEXR':          [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'RAEXR':          [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'JOBR':           [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'OCITSR':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'RTTGSR':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'RTTG1SR':        [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'RIEXR':          [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'XMR':            [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'MUX34R':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'CLMR':           [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'S7STGR':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'C7ST2CR':        [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'S7GSTR':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'C7GSTR':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'C7GSTHR':        [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'C7GSTAHR':       [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'S7HSTR':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'S7HSTR':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'S7HSTR':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'C7STAHR':        [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'SCTPR':          [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'IPR':            [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'TERTR':          [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'ETM1R':          [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'ETM2R':          [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'ETM3R':          [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'CBEXR':          [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'AUCMR':          [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'ETM4R':          [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'ETM5R':          [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'RPMBHR':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'RPMMR':          [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'xxxxxx':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'xxxxxx':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'xxxxxx':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'xxxxxx':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'xxxxxx':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'xxxxxx':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'xxxxxx':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'xxxxxx':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'xxxxxx':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'xxxxxx':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'xxxxxx':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'xxxxxx':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'xxxxxx':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'xxxxxx':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'xxxxxx':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'xxxxxx':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'default':        [{'cno': '', 'suid_reg': r'^8/', 'type': ('epb1',)}, {'cno': '', 'suid_reg': r'^7/', 'type': ('garp2a',)}]
              
              
              }
+suid_map = {}
              
-#print (laeip_map['GARP2A'][0])             
+             
 for a in f:
-    #print (a['suname'])
+    
     if 'default' in laeip_map.keys():
 
         # lets try defaults first
@@ -128,16 +198,22 @@ for a in f:
         for rptype in laeip_map['default']:
             # try to match suid with regexp
             if re.match(rptype['suid_reg'], a['suid'] ):
-                print(a['suname'] + " " + a['suid']+ " " + rptype['type']+ " " + rptype['suid_reg']) 
+                add_to_suid_map(a['suname'], rptype['type'],a['suid'])
+
+#                print(a['suname'] + " " + a['suid']+ " " + rptype['type']+ " " + rptype['suid_reg']) 
         
     # then, scan particular SUNAMEs
     if a['suname'] in laeip_map.keys():
-        for x in laeip_map[a['suname']]:
+        for rp_module in laeip_map[a['suname']]:
         
-            if re.match(x['suid_reg'], a['suid']):
-                print(a['suname'] + " " + a['suid']+ " " + x['type']+ " " + x['suid_reg'])
+            if re.match(rp_module['suid_reg'], a['suid']):
+                add_to_suid_map(a['suname'], rp_module['type'], a['suid'])
+
                 
             
+print(suid_map)
                 
 #     if a['suname'] in laeip_map.keys():
 #         print('Found'+ str(laeip_map[a['suname']]))
+
+    
