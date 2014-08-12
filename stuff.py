@@ -1,4 +1,5 @@
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch, MagicMock, mock_open
+import os.path
 # def dekorator(fu):
 #     def aaa(*args, **kwds):
 #         print ('Nazwa funkcji: ', fu.__name__)
@@ -16,12 +17,27 @@ from unittest.mock import patch, MagicMock
 
 content =  ['dupa', 'blada']
 with patch('builtins.open', create=True) as openmock:
-    fh = openmock().__enter__.return_value
-    fh.__iter__.return_value = ( i for i in content)
-    print(openmock)
+    openmock().__enter__.return_value.__iter__.return_value = ( i for i in content)
     with open('c:/mylog.log', 'r') as f:
         for i in f:
             print(i)
         print(openmock.mock_calls)
     print('koniec')
         
+file1 = 'aaa'
+file2 = 'bbb'
+
+with patch('os.path.isfile') as p:
+    p.side_effect = lambda x: {'aaa': 'pierwszy', 'bbb': 'drugi'}[x]
+    result1 = os.path.isfile(file1)
+    result2 = os.path.isfile(file2)
+    print(result1, result2)
+    print(p.mock_calls)
+    
+@patch('os.path.isdir', side_effect=(i for i in [True, False]))
+def test_isdir(dirr, p):
+    print(os.path.isdir(dirr))
+    print(os.path.isdir(dirr))
+    print(p.mock_calls)
+    
+test_isdir('aaa')
