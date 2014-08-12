@@ -34,10 +34,13 @@ with patch('os.path.isfile') as p:
     print(result1, result2)
     print(p.mock_calls)
     
-@patch('os.path.isdir', side_effect=(i for i in [True, False]))
-def test_isdir(dirr, p):
+@patch('os.path.isdir')
+@patch('os.path.isfile')
+def test_isdir(dirr, p_isfile, p_isdir):
+    p_isdir.return_value = 'isfile'
+    p_isfile.return_value = 'isdir'
     print(os.path.isdir(dirr))
-    print(os.path.isdir(dirr))
+    print(os.path.isfile(dirr))
     print(p.mock_calls)
     
 test_isdir('aaa')
