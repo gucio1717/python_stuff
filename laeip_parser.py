@@ -107,7 +107,7 @@ class LaeipDtLoader:
                 return self.soft[i]
 
 def add_to_suid_map(suname, rp_type, suid):
-    print(suname, rp_type,suid)
+#    print(suname, rp_type,suid)
     tmpdict = {}
 
     for t in rp_type:          
@@ -119,15 +119,14 @@ def add_to_suid_map(suname, rp_type, suid):
         suid_map[suname] = tmpdict
             
 
-import re
+import re, dicttoxml,pprint
 
 f = LaeipDtLoader(r'H:\tmp\LAEIP.log')
+#f = LaeipDtLoader(r'/home/qwojgut/tmp/LAEIP.log')
 
-#laeip_map = {'GARP2A': [{ 'suname': 'INETR', 'cno': '', 'suid': r'^7/'}, { 'suname': 'RGCONR', 'cno': '', 'suid': r'^7/'}] }
-
-laeip_map = {'INETR':          [{'cno': '', 'suid_reg': r'', 'type': ('garp2a',)},{'cno': '', 'suid_reg': r'.*146 125.*', 'type': ('rpp4s',) }],
+laeip_map = {'INETR':          [{'cno': '', 'suid_reg': r'140 591', 'type': ('garp2a',)},{'cno': '', 'suid_reg': r'.*146 089.*', 'type': ('rpp4s',) }, {'cno': '', 'suid_reg': r'.*146 600.*', 'type': ('epb1',) },{'cno': '', 'suid_reg': r'.*146 125.*', 'type': ('rpali1s',) }],
              'RPIFDR':         [{'cno': '', 'suid_reg': r'.*146 03.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*146 23.*', 'type': ('rpi',) }],
-             'RPFDR':          [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
+             'RPFDR':          [{'cno': '', 'suid_reg': r'.*146 05.*', 'type': ('epb1', 'garp2a','rpp4s')},{'cno': '', 'suid_reg': r'.*146 10.*', 'type': ('rpg3',) }],
              'RPEXR':          [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
              'SFRAMER':        [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
              'GPEX2R':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
@@ -182,7 +181,7 @@ laeip_map = {'INETR':          [{'cno': '', 'suid_reg': r'', 'type': ('garp2a',)
              'xxxxxx':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
              'xxxxxx':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
              'xxxxxx':         [{'cno': '', 'suid_reg': r'.*.*', 'type': ('garp2a','rpp4s','rpg3')},{'cno': '', 'suid_reg': r'.*', 'type': ('rpi',) }],
-             'default':        [{'cno': '', 'suid_reg': r'^8/', 'type': ('epb1',)}, {'cno': '', 'suid_reg': r'^7/', 'type': ('garp2a',)}]
+             'default':        [{'cno': '', 'suid_reg': r'^8/', 'type': ('epb1',)}, {'cno': '', 'suid_reg': r'^7/', 'type': ('garp2a',)}, {'cno': '', 'suid_reg': r'^6/', 'type': ('rpali',)},{'cno': '', 'suid_reg': r'^4/', 'type': ('rpps1',)},{'cno': '', 'suid_reg': r'^3/', 'type': ('rpg3a',)}]
              
              
              }
@@ -210,9 +209,12 @@ for a in f:
                 add_to_suid_map(a['suname'], rp_module['type'], a['suid'])
 
                 
-            
-print(suid_map)
-                
+for k, v in suid_map.items():            
+    print(k,v)
+
+xml=dicttoxml.dicttoxml(laeip_map, root=True, ids=False)
+
+#print (xml)                
 #     if a['suname'] in laeip_map.keys():
 #         print('Found'+ str(laeip_map[a['suname']]))
 
