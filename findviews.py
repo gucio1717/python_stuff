@@ -123,7 +123,7 @@ def main():
     failures = list()
     pattern = re.compile(r'(?P<view_name>.+)\nLast accessed (?P<age>\S+) by (?P<user>[^\.]+)')
     timeout_delta = datetime.timedelta(days=num_days)
-    cc_command_temp = 'cleartool setview -exec "cleartool lsp -co -s | xargs cleartool unco -rm " {0} ; yes no | cleartool rmview -tag {0}'
+    cc_command_temp = 'cleartool rmview -tag {0}'
     for view_path in view_paths:
         command = ['cleartool','lsview','-s', '-age', '-storage', view_path]
 #        print('Executing: {}'.format(' '.join(command)))
@@ -139,10 +139,7 @@ def main():
             age = datetime.datetime.strptime(python_time,"%Y-%m-%dT%H:%M:%S%z")
             if (age + timeout_delta).replace(tzinfo=None) < datetime.datetime.now():
                 cc_command = cc_command_temp.format(matcher.group('view_name'))
-                print('echo "{} by {}"; {}'.format(age.strftime('%Y-%m-%d'),
-                                                   matcher.group('user'),
-                                                   cc_command
-                                           ))
+                print(cc_command)
                 
     print('Failures:\n{}'.format("\n".join(failures)))
 
